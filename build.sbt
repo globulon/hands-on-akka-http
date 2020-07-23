@@ -87,6 +87,8 @@ lazy val Versions = new {
 	lazy val cats = "2.1.1"
 	lazy val shapeless = "2.3.3"
 	lazy val `cats-mtl` = "0.7.0"
+	lazy val akka = "2.6.8"
+	lazy val http = "10.1.12"
 }
 
 lazy val catsSettings = Seq(
@@ -119,8 +121,17 @@ lazy val loggerSettings = Seq(
   }
 )
 
+lazy val akkaSettings = Seq(
+	libraryDependencies ++= Seq(
+		"com.typesafe.akka" %% "akka-http"   % Versions.http,
+		"com.typesafe.akka" %% "akka-stream" % Versions.akka
+	)   map {
+    _ withSources() withJavadoc()
+  }
+)
+
 lazy val users = (project in file("modules/users"))
-  .settings(appSettings ++ catsSettings ++ loggerSettings ++ 
+  .settings(appSettings ++ akkaSettings ++ catsSettings ++ loggerSettings ++ 
     coverageSettings )
   .enablePlugins(JavaAppPackaging)
   .enablePlugins(DockerPlugin)
