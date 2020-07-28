@@ -1,12 +1,14 @@
-
 package com.services.http.engine
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
+import com.services.http.dtos.JsonFormats
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.io.StdIn
 
-object Server extends Routes {
+object Server extends Routes with JsonFormats {
+
   def main(args: Array[String]) {
     implicit val system: ActorSystem = ActorSystem("my-system")
     implicit val executionContext: ExecutionContextExecutor = system.dispatcher

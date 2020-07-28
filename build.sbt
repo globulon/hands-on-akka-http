@@ -83,6 +83,7 @@ lazy val Versions = new {
   lazy val akka = "2.6.8"
   lazy val http = "10.1.12"
   lazy val refined = "0.9.15"
+  lazy val `refined-json` = "0.1.0"
 }
 
 lazy val catsSettings = Seq(
@@ -136,10 +137,19 @@ lazy val akkaSettings = Seq(
     }
 )
 
+lazy val serSettings = Seq (
+  libraryDependencies ++= Seq(
+    "com.typesafe.akka" %% "akka-http-spray-json" % Versions.http,
+    "io.github.typeness" %% "spray-json-refined" % Versions.`refined-json`
+  ) map {
+    _ withSources () withJavadoc ()
+  }
+)
+
 lazy val users = (project in file("modules/users"))
   .settings(
     appSettings ++ akkaSettings ++ catsSettings ++ loggerSettings ++
-    coverageSettings ++ refinedSettings
+    coverageSettings ++ refinedSettings ++ serSettings
   )
   .enablePlugins(JavaAppPackaging)
   .enablePlugins(DockerPlugin)
