@@ -1,9 +1,9 @@
 package com.services.http.engine
 
-import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed._
+import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.util.Timeout
 import cats.effect.{ExitCode, IO, IOApp}
 import com.services.algebra.Users
@@ -31,8 +31,7 @@ object Server extends Routes with JsonFormats with Configuration with IOApp {
       implicit val ec: ExecutionContextExecutor = system.executionContext
       implicit val scheduler: Scheduler = system.scheduler
       implicit val timeout: Timeout = 3.seconds
-
-      implicit val materializer: ActorMaterializer = ActorMaterializer()(classic)
+      implicit val materializer: Materializer = Materializer(ctx)
 
       val users = ctx.spawn(com.services.instances.userService(repo), name = "UserRepo")
       val bindingFuture = Http().bindAndHandle(routes(users), config.host.value, config.port.value)

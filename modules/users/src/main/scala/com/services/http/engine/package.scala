@@ -2,9 +2,9 @@ package com.services.http
 
 import akka.actor.typed.receptionist.ServiceKey
 import com.services.Command
+import enumeratum.{EnumEntry, _}
 
 import scala.collection.immutable.IndexedSeq
-import enumeratum.{EnumEntry, _}
 
 package object engine {
 

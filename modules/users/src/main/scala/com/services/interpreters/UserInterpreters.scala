@@ -1,14 +1,14 @@
 package com.services.interpreters
 
+import cats.effect._
 import cats.effect.concurrent.Ref
+import cats.implicits._
+import com.services.algebra.Users
 import com.services.domain.{ID, User, UserDefinition}
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.collection.NonEmpty
 
 import scala.language.higherKinds
-import cats.effect._
-import cats.implicits._
-import com.services.algebra.Users
 
 private[interpreters] trait UserInterpreters {
 
