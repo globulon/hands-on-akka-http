@@ -4,7 +4,7 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, StatusCodes}
 import akka.http.scaladsl.server.Directives.{complete, get, path, _}
 import akka.http.scaladsl.server.Route
-import com.services.http.dtos.{User, JsonFormats, NoError, UserCreation}
+import com.services.http.dtos.{User, JsonFormats, NoError, UserDescription}
 import spray.json.DefaultJsonProtocol._
 
 private[http] trait Routes { self: JsonFormats ⇒
@@ -16,7 +16,7 @@ private[http] trait Routes { self: JsonFormats ⇒
           pathEnd {
             concat(
               post {
-                entity(as[UserCreation]) { _ =>
+                entity(as[UserDescription]) { _ =>
                   complete((StatusCodes.Created, NoError))
                 }
               },

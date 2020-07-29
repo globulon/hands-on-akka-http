@@ -5,9 +5,9 @@ import com.services.domain.{ID, User, UserDescription}
 import scala.language.higherKinds
 
 trait Users[F[_]] {
-  def get: ID ⇒ F[Option[User]]
+  def get: ID => F[Option[User]]
 
-  def create: UserDescription ⇒ F[Unit]
+  def create: UserDescription => F[Unit]
 
   def all: F[List[User]]
 }

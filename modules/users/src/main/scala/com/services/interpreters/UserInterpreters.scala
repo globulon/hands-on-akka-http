@@ -10,7 +10,7 @@ import cats.effect._
 import cats.implicits._
 import com.services.algebra.Users
 
-trait UserInterpreters {
+private[interpreters] trait UserInterpreters {
   final protected def inMemory[F[_] : Sync]: F[Users[F]] = Ref.of[F, Map[String Refined NonEmpty, User]](Map.empty).map {
     users => new Users[F] {
       override def get: ID => F[Option[User]] = {

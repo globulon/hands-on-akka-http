@@ -131,7 +131,8 @@ lazy val loggerSettings = Seq(
 lazy val akkaSettings = Seq(
   libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-http"   % Versions.http,
-      "com.typesafe.akka" %% "akka-stream" % Versions.akka
+      "com.typesafe.akka" %% "akka-stream" % Versions.akka,
+      "com.typesafe.akka" %% "akka-actor-typed" % Versions.akka
     ) map {
       _ withSources () withJavadoc ()
     }
