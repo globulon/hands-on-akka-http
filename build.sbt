@@ -84,6 +84,7 @@ lazy val Versions = new {
   lazy val http = "10.1.12"
   lazy val refined = "0.9.15"
   lazy val `refined-json` = "0.1.0"
+  lazy val ciris = "1.1.1"
 }
 
 lazy val catsSettings = Seq(
@@ -109,7 +110,14 @@ lazy val refinedSettings = Seq(
 )
 
 lazy val appSettings = Seq(
-  libraryDependencies ++= Seq("com.typesafe" % "config" % Versions.config)
+  libraryDependencies ++= Seq("com.typesafe" % "config" % Versions.config,
+    "is.cir" %% "ciris" % Versions.ciris,
+    "is.cir" %% "ciris-circe" % Versions.ciris,
+    "is.cir" %% "ciris-enumeratum" % Versions.ciris,
+    "is.cir" %% "ciris-refined" % Versions.ciris
+  ) map {
+    _ withSources () withJavadoc ()
+  }
 )
 
 lazy val coverageSettings = Seq(

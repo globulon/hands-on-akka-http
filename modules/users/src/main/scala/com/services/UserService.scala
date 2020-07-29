@@ -1,20 +1,53 @@
 package com.services
 
 import akka.actor.typed.Behavior
-import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext}
+import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
+import cats.effect.IO
 import com.services.algebra.Users
-import com.services.domain.UserDescription
+import eu.timepit.refined.types.string.NonEmptyString
 
 import scala.language.higherKinds
+import scala.util.{Failure, Success}
 
+final class UserService(context: ActorContext[Command], users: Users[IO])
+    extends AbstractBehavior[Command](context) {
 
-sealed trait UserCommand
-final case class Create(description: UserDescription) extends UserCommand
+  override def onMessage(msg: Command): Behavior[Command] =
+    msg match {
+      case Create(fromDescription) =>
+        users.create(fromDescription)
+        Behaviors.same
+      case GetAll(replyTo) =>
+        context.pipeToSelf(users.all.unsafeToFuture) {
+          case Success(users) => Wrap(Found(users), replyTo)
+          case Failure(e) =>
+            Wrap(
+              Error(
+                NonEmptyString
+                  .from(e.getMessage)
+                  .getOrElse(NonEmptyString.unsafeFrom("unknown error"))
+              ),
+              replyTo
+            )
+        }
+        Behaviors.same
+      case GetBy(id, replyTo) =>
+        context.pipeToSelf(users.get(id).unsafeToFuture) {
+          case Success(users) => Wrap(Found(users.toList), replyTo)
+          case Failure(e) =>
+            Wrap(
+              Error(
+                NonEmptyString
+                  .from(e.getMessage)
+                  .getOrElse(NonEmptyString.unsafeFrom("unknown error"))
+              ),
+              replyTo
+            )
+        }
+        Behaviors.same
 
-final class UserService[F[_]](context: ActorContext[UserCommand], users: Users[F]) extends AbstractBehavior[UserCommand](context) {
-  override def onMessage(msg: UserCommand): Behavior[UserCommand] = msg match {
-    case Create(fromDescription) =>
-      users.create(fromDescription)
-      this
-  }
+      case Wrap(msg, to) =>
+        to ! msg
+        Behaviors.same
+    }
 }
