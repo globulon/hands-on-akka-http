@@ -2,15 +2,15 @@
 
 101 getting acquainted with Akka again
 
--[X] init
--[X] Create dto
--[X] create domain
--[X] create algebras
--[ ] Create in memory algebra
--[ ] Connect algebra
--[ ] Start with IO
--[ ] Use Ciris for config
--[ ] Try command / queries
+- [X] init
+- [X] Create dto
+- [X] create domain
+- [X] create algebras
+- [ ] Create in memory algebra
+- [ ] Connect algebra
+- [ ] Start with IO
+- [ ] Use Ciris for config
+- [ ] Try command / queries
 
 ## Usage 
 
